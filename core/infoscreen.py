@@ -3,6 +3,7 @@ import sys
 
 from kivy.uix.floatlayout import FloatLayout
 from kivy.core.window import Window
+from kivy.logger import Logger
 
 from core.failedscreen import FailedScreen
 
@@ -71,6 +72,7 @@ class InfoScreen(FloatLayout):
                 except Exception, e:
                     # Add the screen name and error message to our list
                     failedscreens.append((p["name"], repr(e)))
+                    Logger.error("Screen: Failed to start screen: %s, reason: %s" % (p["name"], e))
 
                 else:
                     # We can add the screen to our list of available screens.
