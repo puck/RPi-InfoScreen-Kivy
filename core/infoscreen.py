@@ -1,6 +1,8 @@
 import imp
+import sys
 
 from kivy.uix.floatlayout import FloatLayout
+from kivy.core.window import Window
 
 from core.failedscreen import FailedScreen
 
@@ -8,6 +10,10 @@ from core.failedscreen import FailedScreen
 class InfoScreen(FloatLayout):
     def __init__(self, **kwargs):
         super(InfoScreen, self).__init__(**kwargs)
+
+        # Bind keyboard actions
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
         # Get our list of available plugins
         plugins = kwargs["plugins"]
@@ -93,3 +99,19 @@ class InfoScreen(FloatLayout):
 
         self.index = (self.index + inc) % len(self.availablescreens)
         self.scrmgr.current = self.availablescreens[self.index]
+
+    def prev_screen(self):
+        self.next_screen(rev=True)
+
+    def _keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == 'left':
+            self.next_screen()
+        elif keycode[1] == 'right':
+            self.prev_screen()
+        elif keycode[1] == 'q' or keycode[1] == 'escape':
+            sys.exit()
+        return True
