@@ -33,7 +33,7 @@ class ArtworkResolver(object):
         self.prefix = "http://www.mysqueezebox.com/public/imageproxy?{data}"
 
     def __getRemoteURL(self, track, size):
-        # Check whether there's a URL for remote artworl
+        # Check whether there's a URL for remote artwork
         art = track.get("artwork_url", False)
 
         # If there is, build the link.
